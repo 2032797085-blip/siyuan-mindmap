@@ -1,0 +1,48 @@
+{
+  "name": "siyuan-mindmap",
+  "author": "SiYuan MindMap Contributors",
+  "url": "https://github.com/wanglin2/mind-map",
+  "version": "0.5.0-dev.19",
+  "minAppVersion": "3.8.5",
+  "kernels": [
+    "all"
+  ],
+  "backends": [
+    "all"
+  ],
+  "frontends": [
+    "desktop",
+    "browser-desktop",
+    "desktop-window"
+  ],
+  "displayName": {
+    "default": "SiYuan MindMap",
+    "zh_CN": "思源思维导图",
+    "zh-CN": "思源思维导图"
+  },
+  "description": {
+    "default": "Inline editable SimpleMindMap mind maps inside SiYuan documents",
+    "zh_CN": "直接在思源文档正文中插入和编辑思维导图，数据随文档保存",
+    "zh-CN": "直接在思源文档正文中插入和编辑思维导图，数据随文档保存"
+  },
+  "readme": {
+    "default": "README.md",
+    "zh_CN": "README.md",
+    "zh-CN": "README.md"
+  },
+  "icon": "icon.png",
+  "preview": "preview.png",
+  "keywords": [
+    "思维导图",
+    "mindmap",
+    "SimpleMindMap",
+    "offline"
+  ],
+  "disabledInPublish": true,
+  "publish": {
+    "resources": [
+      "editor/"
+    ],
+    "data": []
+  }
+}

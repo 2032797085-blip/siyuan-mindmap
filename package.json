@@ -1,0 +1,14 @@
+{
+  "name": "siyuan-mindmap-source",
+  "version": "0.5.0-dev.19",
+  "private": true,
+  "scripts": {
+    "install:editor": "npm install --prefix web --no-audit --no-fund",
+    "build": "node scripts/build.mjs",
+    "test": "node scripts/test.mjs",
+    "validate": "node scripts/validate.mjs"
+  },
+  "engines": {
+    "node": ">=18"
+  }
+}

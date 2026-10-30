@@ -1,0 +1,77 @@
+/* A fixed second row inside the FIRST (node actions) toolbar block. */
+.toolbarContainer .toolbar .toolbarBlock:first-child {
+  flex-wrap: wrap !important;
+  row-gap: 4px;
+  align-content: start;
+}
+.toolbarContainer .toolbar .toolbarBlock:first-child .siyuan-format-host {
+  box-sizing: border-box;
+  flex: 0 0 100%;
+  width: 100%;
+  height: 38px;
+  margin-top: 5px;
+  border-top: 1px solid #eaeaea;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  min-width: 0;
+}
+.toolbarContainer .siyuan-format-label {
+  font-size: 12px;
+  white-space: nowrap;
+  color: #777;
+  flex-shrink: 0;
+}
+/* Override SimpleMindMap's selection-relative floating coordinates. */
+.toolbarContainer .siyuan-format-host .richTextToolbar {
+  position: static !important;
+  top: auto !important;
+  left: auto !important;
+  transform: none !important;
+  z-index: 3;
+  display: flex !important;
+  align-items: center;
+  width: auto;
+  height: 34px;
+  padding: 0 2px;
+  margin: 0;
+  border: 0;
+  border-radius: 4px;
+  box-shadow: none;
+  background: transparent;
+}
+.toolbarContainer .siyuan-format-host .richTextToolbar .btn {
+  width: 35px;
+  height: 33px;
+  border-radius: 4px;
+}
+.toolbarContainer .siyuan-format-host .richTextToolbar .btn .icon {
+  font-size: 18px;
+}
+.toolbarContainer .siyuan-format-host .richTextToolbar:not(.siyuan-format-enabled) {
+  opacity: .4;
+  pointer-events: none;
+}
+.toolbarContainer.isDark .siyuan-format-host { border-top-color: #484848; }
+.toolbarContainer.isDark .siyuan-format-label { color: #aaa; }
+@media (max-width: 1050px) {
+  .toolbarContainer .siyuan-format-host .richTextToolbar .btn {width: 28px;}
+  .toolbarContainer .siyuan-format-label { font-size: 11px; }
+}
+
+/* Compact mode: formatting controls float below the one-line toolbar. */
+.toolbarContainer .toolbar.siyuan-compact-toolbar .siyuan-compact-block .siyuan-format-host {
+  flex: none; width: auto; height: auto; margin: 0; border-top: 0;
+}
+.toolbarContainer .toolbar.siyuan-compact-toolbar .siyuan-compact-block .siyuan-format-label {display: none;}
+.toolbarContainer .toolbar.siyuan-compact-toolbar .siyuan-compact-block .richTextToolbar {height: 34px;}
+/* Popover content lives outside the toolbar container in Element UI. */
+.siyuan-compact-menu { padding: 5px 6px !important; }
+.siyuan-compact-file-actions { display: flex; flex-direction: column; gap: 2px; }
+.siyuan-compact-file-actions button {
+  display: block; width: 100%; text-align: left; padding: 7px 10px;
+  font: inherit; font-size: 12px; color: inherit; border: 0; border-radius: 4px;
+  background: transparent; cursor: pointer;
+}
+.siyuan-compact-file-actions button:hover,
+.siyuan-compact-file-actions button:focus-visible {background: rgba(127,127,127,.12); outline: none;}

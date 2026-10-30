@@ -1,0 +1,46 @@
+SiYuan MindMap v0.5.0-dev.2 —— PowerShell 一键编译/自动安装
+=======================================================
+
+【文件放在哪里】
+把 build-and-deploy.ps1 放进源码根目录：
+D:\思源笔记插件制作程序\siyuan-思维导图\build-and-deploy.ps1
+同级应能看到 package.json，以及 web、engine、plugin、scripts 文件夹。
+这是对原 v0.5.0 源码的附加工具，不修改快捷键、节点、引擎代码。
+
+【一键编译、生成 package.zip、备份并自动覆盖安装】
+先保存文档并完全退出思源，再打开 Windows PowerShell，整行复制运行：
+
+powershell.exe -NoProfile -ExecutionPolicy Bypass -File "D:\思源笔记插件制作程序\siyuan-思维导图\build-and-deploy.ps1"
+
+命令与当前 PowerShell 工作目录无关。使用的是 Windows 10 自带 PowerShell 5.1，
+无需另外安装 PowerShell 7。仅本次进程使用 ExecutionPolicy Bypass，不修改电脑永久策略。
+
+【只编译、不安装，先验证安装包】
+powershell.exe -NoProfile -ExecutionPolicy Bypass -File "D:\思源笔记插件制作程序\siyuan-思维导图\build-and-deploy.ps1" -BuildOnly
+
+【输出位置】
+源码根目录\build\package.zip —— 重新制作并验证的标准安装 ZIP。
+源码根目录\build\siyuan-mindmap —— 编译后的完整插件。
+源码根目录\build\deploy-backups —— 每次覆盖安装前的旧插件备份。
+
+【默认自动安装到】
+D:\思源笔记数据-\设置模板\data\plugins\siyuan-mindmap
+（其中包含 plugin.json、index.js、editor 等文件以及 package.zip。）
+
+【注意事项】
+1. 必须从干净的 v0.5.0-dev.2 源码编译；不要混入 v0.5.1～v0.5.5 补丁。
+2. 第一次运行若找不到 web/node_modules，会自动运行 npm install，需网络。
+3. 已知你的 Node.js 路径为 S:\node；脚本会在系统 PATH 找不到 npm 时自动尝试 S:\node\npm.cmd。
+4. v0.5.0 原构建脚本用到 Python 3/py -3；需要系统能调用 Python。
+5. 如果思源还在运行，脚本会在部署之前停止，不会覆盖当前安装。
+6. 覆盖安装前验证插件 ID/版本、插件文件、ZIP 内部路径，备份旧插件。
+7. 为防止误删除，默认只允许部署到 data\plugins\siyuan-mindmap。
+8. 用 -TargetPluginDir 可指定另一个测试工作空间的 data\plugins\siyuan-mindmap。
+9. 编译产生的 npm/Webpack 体积警告通常不是失败；以 BUILD/DEPLOY SUCCESS 为准。
+10. 本脚本是新增的独立工具，尚未在你的 Windows 10 + 思源实机运行验证。
+
+【使用建议】
+先运行 -BuildOnly 检查编译，然后关闭思源运行完整命令自动安装。
+安装成功后，测试 F2、删除键、方向键、Enter/Tab、双击、保存与重新打开。
+
+如果 PowerShell 显示 ERROR，请把最后 20 行复制出来，不要自行删除 build/deploy-backups。

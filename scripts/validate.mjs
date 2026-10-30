@@ -1,0 +1,28 @@
+#!/usr/bin/env node
+import fs from 'node:fs';
+import path from 'node:path';
+import {fileURLToPath} from 'node:url';
+const root=path.resolve(path.dirname(fileURLToPath(import.meta.url)),'..');
+const read=p=>fs.readFileSync(path.join(root,p),'utf8');
+const requireCheck=(cond,msg)=>{if(!cond)throw new Error(msg)};
+const config=read('web/vue.config.js');
+const pkg=JSON.parse(read('web/package.json'));
+requireCheck(pkg.dependencies['simple-mind-map']==='file:../engine','Web package must reference local engine');
+requireCheck(config.includes("'simple-mind-map': path.resolve(__dirname, '../engine')"),'Webpack engine alias missing');
+requireCheck(!fs.existsSync(path.join(root,'plugin/editor/dist')),'Do not commit minified editor bundles as source');
+const renderer=read('engine/src/core/render/Render.js');
+requireCheck(renderer.includes('const redrawEditedNode = this.onNodeTextEditChange.bind(this)'),'RAF text redraw missing');
+requireCheck(!renderer.includes('debounce(this.onNodeTextEditChange, 100, this)'),'Old typing debounce remains');
+const vue=read('web/src/pages/Edit/components/RichTextToolbar.vue');
+requireCheck(vue.includes('window.siyuanDockRichTextToolbar(this.$refs.richTextToolbar)'),'Rich text component not source-integrated');
+requireCheck(vue.includes('isSiyuanEmbedded'),'Dock selection state missing');
+const api=read('web/src/api/index.js');
+requireCheck(!api.includes("if ('exceeded')"),'Storage errors still misclassified');
+requireCheck(api.includes('window.reportMindMapSaveFailure(error)'),'Embed save error propagation missing');
+const publicHtml=read('web/public/index.html');
+requireCheck(publicHtml.includes('window.takeOverApp = true'),'Missing embedded mode');
+requireCheck(!publicHtml.includes('sdk.51.la'),'Tracking script must not be part of embedded editor');
+const metadata=JSON.parse(read('plugin/plugin.json'));
+requireCheck(metadata.name==='siyuan-mindmap' && metadata.version.startsWith('0.5.0'),'Plugin identity/version incorrect');
+requireCheck(read('plugin/src/index.js').includes("const BLOCK_TYPE = 'mindmap'"),'Legacy custom block format changed');
+console.log('Source migration checks passed (local engine, editor, bridge, persistence, theme and identity).');

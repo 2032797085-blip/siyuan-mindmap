@@ -1,0 +1,27 @@
+name: Source Build and Regression Tests
+on:
+  push:
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  source-build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '18'
+      - name: Install Vue dependencies
+        run: npm install --prefix web --legacy-peer-deps --no-audit --no-fund
+      - name: Run migration and plugin regression tests
+        run: |
+          npm run validate
+          npm test
+      - name: Build from local editor and engine source
+        run: npm run build
+      - uses: actions/upload-artifact@v4
+        with:
+          name: siyuan-mindmap-compiled-beta
+          path: build/*.zip
+          if-no-files-found: error

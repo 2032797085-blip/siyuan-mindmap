@@ -1,0 +1,75 @@
+.smm-inline-host {display:block;width:100%;max-width:1447px;min-width:0}
+.smm-inline-slot {display:block;width:100%;min-width:0;min-height:320px;background:var(--b3-theme-background,#fff);border:1px solid var(--b3-border-color,#ddd);border-radius:7px;box-sizing:border-box}
+.smm-inline-portal {position:fixed;z-index:1;box-sizing:border-box;display:flex;flex-direction:column;min-width:0;overflow:hidden;border:1px solid var(--b3-border-color,#ddd);border-radius:7px;background:var(--b3-theme-background,#fff);box-shadow:0 1px 3px #0002}
+.smm-inline-toolbar {display:flex;align-items:center;gap:7px;flex:0 0 auto;flex-wrap:wrap;padding:5px 8px;min-height:28px;box-sizing:border-box;border-bottom:1px solid var(--b3-border-color,#ddd);background:var(--b3-theme-surface,#f5f5f5)}
+.smm-inline-caption {font-size:13px;white-space:nowrap}
+.smm-inline-status {flex:1 1 145px;min-width:100px;text-align:right;font-size:11px;color:var(--b3-theme-on-surface,#666)}
+.smm-inline-button {padding:4px 7px;white-space:nowrap;font-size:12px}
+.smm-inline-iframe {width:100%;min-width:0;min-height:0;flex:1 1 auto;display:block;border:0;background:#fff}
+.smm-inline-expanded {position:fixed!important;z-index:5000!important;inset:20px!important;width:auto!important;height:auto!important;max-width:none!important;box-shadow:0 15px 60px #0005}
+@media (max-width:800px) {.smm-inline-expanded {inset:4px!important}.smm-inline-status {order:1;text-align:left}}
+
+/* Keep native popup tools above our iframe while editing, but never elevate
+   the editor breadcrumb/util bars: that made them cover SiYuan's Settings dialog.
+   Disable the popup elevation for any native dialog (settings, search, etc.).
+   The iframe stays mounted, so no editor state or unsaved data is discarded. */
+body:not(:has(.b3-dialog--open)) .protyle:has(> .smm-inline-portal) .protyle-hint,
+body:not(:has(.b3-dialog--open)) .protyle:has(> .smm-inline-portal) .protyle-toolbar,
+body:not(:has(.b3-dialog--open)) .protyle:has(> .smm-inline-portal) .b3-menu {
+    z-index: 20;
+}
+/* The expanded map must yield to native dialogs as well. */
+body:has(.b3-dialog--open) .smm-inline-expanded {
+    z-index: 1 !important;
+}
+
+/* Synchronous SVG preview inside the *real* block: this never overlaps the
+   document title, even when the editor portal is temporarily hidden. */
+.smm-inline-slot {position:relative;overflow:hidden;}
+.smm-inline-preview {position:absolute;inset:0;display:flex;align-items:center;justify-content:center;pointer-events:none;background:var(--b3-theme-background,#fff);}
+.smm-inline-preview svg {width:100%;height:100%;display:block;overflow:visible;}
+.smm-inline-slot:not(.smm-inline-slot-pending) .smm-inline-preview {display:none;}
+
+/* v0.5.0 safe collapse: keep the iframe alive; only shrink its outer shell. */
+.smm-inline-slot.smm-inline-slot-collapsed {
+    min-height: 0;
+    height: 48px;
+}
+.smm-inline-slot-collapsed .smm-inline-preview { display: none !important; }
+.smm-inline-collapsed .smm-inline-toolbar {
+    flex: 1 0 100%;
+    height: 100%;
+    flex-wrap: nowrap;
+    overflow: hidden;
+}
+.smm-inline-collapsed .smm-inline-status {
+    flex: 1 1 auto;
+    min-width: 0;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+.smm-inline-collapsed .smm-inline-button:not(.smm-inline-collapse-button) { display: none; }
+.smm-inline-collapsed .smm-inline-collapse-button { flex: 0 0 auto; }
+.smm-inline-collapsed .smm-inline-iframe {
+    position: absolute;
+    top: 48px;
+    left: 0;
+    width: 100%;
+    flex: none;
+    visibility: hidden;
+    pointer-events: none;
+}
+
+/* v0.5.0-dev.4: display the center topic only in a minimized block. */
+.smm-inline-collapsed .smm-inline-caption {
+    flex: 1 1 auto;
+    min-width: 0;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+.smm-inline-collapsed .smm-inline-status {
+    flex: 0 1 auto;
+    max-width: 38%;
+}

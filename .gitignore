@@ -1,0 +1,27 @@
+# Dependency and cache
+node_modules/
+.npm/
+.pnpm-store/
+# Build outputs
+build/
+dist/
+coverage/
+*.log
+*.zip
+# Local backups and temporary
+.deploy-backups/
+deploy-backups/
+*.tmp
+*.bak
+# Personal config (web/.env.library is a public build preset)
+.env
+.env.local
+.env.*.local
+*.pem
+*.p12
+*.pfx
+# Editor and OS
+.DS_Store
+Thumbs.db
+.idea/
+.vscode/

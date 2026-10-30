@@ -1,0 +1,24 @@
+SiYuan MindMap v0.5.0-dev.2 / PowerShell 依赖修复补丁
+======================================================
+故障原因：原脚本只安装 web 的 node_modules，没有安装 engine 的 node_modules。
+因此编译报错找不到 @svgdotjs/svg.js、quill、jszip、pdf-lib 等依赖。
+
+使用方法：
+1. 备份源码目录（建议），保留已经安装的思源插件。
+2. 将本 ZIP 里的 build-and-deploy.ps1 解压到：
+   D:\思源笔记插件制作程序\siyuan-思维导图
+   覆盖旧的同名文件。不要解压到 scripts 子目录。
+3. 打开 Windows PowerShell，执行下面的一条命令（只编译，不部署）：
+   powershell.exe -NoProfile -ExecutionPolicy Bypass -File "D:\思源笔记插件制作程序\siyuan-思维导图\build-and-deploy.ps1" -BuildOnly
+4. 编译成功后，退出思源并执行下面的正式部署命令：
+   powershell.exe -NoProfile -ExecutionPolicy Bypass -File "D:\思源笔记插件制作程序\siyuan-思维导图\build-and-deploy.ps1"
+
+此修复：
+- 自动检查 engine/node_modules 中的必要依赖，缺失时执行 npm install --prefix engine。
+- 保留之前对 web/node_modules 的检查。
+- 不修改引擎、编辑器、快捷键、plugin.json、package.json 或 build.mjs。
+- 保留 BuildOnly、ZIP 校验、思源运行检测、备份和回滚。
+
+注意：首次安装 engine 依赖需要可访问 npm 的网络。npm 的 deprecated/EBADENGINE 提示
+通常是警告；是否成功应以最后的 BUILD SUCCESS 或 DEPLOY SUCCESS 为准。
+如果出现 npm ERR! 或 ERROR:，请保存完整日志。

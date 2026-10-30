@@ -1,0 +1,29 @@
+<!doctype html><html lang="zh"><head><meta charset="utf-8"><title>Inline mind map remount regression test</title><link rel="stylesheet" href="/plugins/siyuan-mindmap/index.css"><style>body{font:14px sans-serif;background:#f5f5f5;margin:0;padding:20px}#doc{max-width:1050px;margin:auto;background:white;padding:24px;min-height:1400px}button{cursor:pointer}.protyle-content{min-height:900px}</style></head>
+<body><main id="doc" class="protyle"><section class="protyle-content"><h1>思源文档（保存触发重绘模拟）</h1><p>思维导图前面的正文</p><div id="block-shell" data-node-id="20261025153700-1234567"><div id="block"></div></div><p>思维导图后面的正文</p></section></main>
+<script>
+window.siyuan={config:{readonly:false}};
+class Plugin { constructor(){this.name='siyuan-mindmap';this.customBlockRenders={}} addIcons(){} addToolbarItem(obj){this.toolbar=obj} addBreadcrumbButton(obj){this.breadcrumb=obj} }
+window.require=(name)=> {if(name==='siyuan')return {Plugin,showMessage:(...a)=>console.log('message',...a)};throw new Error(name)};
+window.exports={};
+</script><script src="/plugins/siyuan-mindmap/index.js"></script>
+<script>
+window.plugin = new window.exports.default();
+window.plugin.onload();
+window.saves=[]; window.remounts=0;
+window.currentContent=JSON.stringify(window.exports.__test.blankMap());
+function renderBlock(){
+  const shell=document.getElementById('block-shell');
+  shell.innerHTML='<div id="block"></div>';
+  const holder=shell.firstElementChild;
+  window.cleanup=window.plugin.customBlockRenders.mindmap.render({element:holder,content:window.currentContent,setContent:(value)=>{
+    window.saves.push(value); window.currentContent=value;
+    // Model SiYuan's behavior: old custom mount is cleaned and replaced.
+    const oldCleanup=window.cleanup;
+    if(oldCleanup) oldCleanup();
+    window.remounts++;
+    renderBlock();
+    return true;
+  }});
+}
+renderBlock();
+</script></body></html>
